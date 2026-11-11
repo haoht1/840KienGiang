@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { 
   FileCheck, 
   Printer, 
@@ -19,8 +19,10 @@ import {
   User, 
   Building, 
   FolderPlus,
-  AlertCircle
+  AlertCircle,
+  Loader2
 } from 'lucide-react';
+import html2pdf from 'html2pdf.js';
 import contentData from '../data/contentData.json';
 import { ChecklistGroup, ChecklistDocItem, SavedChecklist } from '../types';
 
@@ -30,6 +32,8 @@ export const LoanChecklistTool: React.FC = () => {
   // View state
   const [activeSubTab, setActiveSubTab] = useState<'create' | 'saved' | 'catalog'>('create');
   const [previewMode, setPreviewMode] = useState<boolean>(false);
+  const [isExportingPDF, setIsExportingPDF] = useState<boolean>(false);
+  const printableA4Ref = useRef<HTMLDivElement | null>(null);
 
   // Customer Form States
   const [salutation, setSalutation] = useState<string>('Ông');
@@ -442,8 +446,42 @@ export const LoanChecklistTool: React.FC = () => {
     return `Checklist_HoSo_${cleanName || 'KhachHang'}_${datePart}.pdf`;
   }, [customerName, createdDate]);
 
-  // Native Print / PDF trigger
-  const handlePrintPDF = () => {
+  // Direct download of A4 portrait PDF file
+  const handleExportPDF = async () => {
+    try {
+      setIsExportingPDF(true);
+      setPreviewMode(true);
+      
+      // Allow DOM to render in preview mode
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      
+      const element = printableA4Ref.current;
+      if (!element) {
+        alert('Không tìm thấy nội dung để xuất PDF.');
+        setIsExportingPDF(false);
+        return;
+      }
+
+      const opt = {
+        margin: [8, 10, 10, 10] as [number, number, number, number],
+        filename: pdfFileName,
+        image: { type: 'jpeg' as const, quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
+
+      await html2pdf().set(opt).from(element).save();
+    } catch (err) {
+      console.error('Lỗi khi xuất PDF:', err);
+      alert('Có lỗi khi tạo file PDF. Quý khách có thể sử dụng chức năng In để lưu file.');
+    } finally {
+      setIsExportingPDF(false);
+    }
+  };
+
+  // Direct native print table
+  const handlePrintTable = () => {
     setPreviewMode(true);
     setTimeout(() => {
       window.print();
@@ -467,20 +505,28 @@ export const LoanChecklistTool: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 shrink-0 flex-wrap">
             <button
               onClick={handleSaveCurrentChecklist}
-              className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Lưu checklist</span>
             </button>
             <button
-              onClick={handlePrintPDF}
-              className="px-4 py-2 bg-[#ED1C24] hover:bg-red-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              onClick={handlePrintTable}
+              className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
             >
               <Printer className="w-4 h-4" />
-              <span>Xuất File PDF / In</span>
+              <span>In bảng kết quả</span>
+            </button>
+            <button
+              onClick={handleExportPDF}
+              disabled={isExportingPDF}
+              className="px-4 py-2 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+            >
+              {isExportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+              <span>{isExportingPDF ? 'Đang tạo PDF...' : 'Xuất File PDF'}</span>
             </button>
           </div>
         </div>
@@ -593,27 +639,56 @@ export const LoanChecklistTool: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between gap-2">
-                      <button
-                        onClick={() => handleLoadSavedChecklist(saved)}
-                        className="text-xs font-bold text-[#003B70] hover:underline cursor-pointer"
-                      >
-                        Chỉnh sửa / Mở
-                      </button>
-                      <button
-                        onClick={() => handleCloneSaved(saved)}
-                        className="text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer flex items-center gap-1"
-                      >
-                        <Copy className="w-3 h-3" />
-                        <span>Sao chép</span>
-                      </button>
-                      <button
-                        onClick={() => handleDeleteSaved(saved.id)}
-                        className="text-xs text-red-600 hover:text-red-800 cursor-pointer p-1"
-                        title="Xóa checklist"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
+                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between gap-1.5 flex-wrap">
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => handleLoadSavedChecklist(saved)}
+                          className="text-xs font-bold text-[#003B70] hover:underline cursor-pointer"
+                        >
+                          Mở sửa
+                        </button>
+                        <span className="text-slate-300">·</span>
+                        <button
+                          onClick={() => {
+                            handleLoadSavedChecklist(saved);
+                            setTimeout(() => handlePrintTable(), 250);
+                          }}
+                          className="text-xs font-medium text-slate-700 hover:text-black flex items-center gap-1 cursor-pointer"
+                          title="In bảng kết quả"
+                        >
+                          <Printer className="w-3 h-3" />
+                          <span>In</span>
+                        </button>
+                        <span className="text-slate-300">·</span>
+                        <button
+                          onClick={() => {
+                            handleLoadSavedChecklist(saved);
+                            setTimeout(() => handleExportPDF(), 250);
+                          }}
+                          className="text-xs font-bold text-[#ED1C24] hover:underline flex items-center gap-1 cursor-pointer"
+                          title="Tải file PDF A4"
+                        >
+                          <Download className="w-3 h-3" />
+                          <span>PDF</span>
+                        </button>
+                      </div>
+
+                      <div className="flex items-center gap-1">
+                        <button
+                          onClick={() => handleCloneSaved(saved)}
+                          className="text-xs font-medium text-slate-600 hover:text-slate-900 cursor-pointer flex items-center gap-1 px-1.5 py-0.5 rounded hover:bg-slate-200"
+                          title="Sao chép tạo bản ghi mới"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSaved(saved.id)}
+                          className="text-xs text-red-600 hover:text-red-800 cursor-pointer p-1 rounded hover:bg-red-50"
+                          title="Xóa checklist"
+                        >
+                          <Trash2 className="w-3.5 h-3.5" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -1112,20 +1187,28 @@ export const LoanChecklistTool: React.FC = () => {
               </span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 flex-wrap">
               <button
                 onClick={handleSaveCurrentChecklist}
-                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
               >
                 <Save className="w-4 h-4" />
                 <span>Lưu checklist này</span>
               </button>
               <button
-                onClick={handlePrintPDF}
-                className="px-5 py-2 bg-[#ED1C24] hover:bg-red-700 text-white rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                onClick={handlePrintTable}
+                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
-                <span>Xem & Xuất File PDF A4</span>
+                <span>In bảng kết quả</span>
+              </button>
+              <button
+                onClick={handleExportPDF}
+                disabled={isExportingPDF}
+                className="px-4 py-2 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+              >
+                {isExportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+                <span>{isExportingPDF ? 'Đang tạo PDF...' : 'Xuất File PDF (A4)'}</span>
               </button>
             </div>
           </div>
@@ -1145,7 +1228,7 @@ export const LoanChecklistTool: React.FC = () => {
                 Chế độ xem trước tài liệu PDF chuẩn A4 (Trang in chính thức)
               </span>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setPreviewMode(false)}
                 className="px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-lg text-xs font-semibold cursor-pointer"
@@ -1153,17 +1236,25 @@ export const LoanChecklistTool: React.FC = () => {
                 Quay lại chỉnh sửa
               </button>
               <button
-                onClick={() => window.print()}
-                className="px-4 py-1.5 bg-[#ED1C24] hover:bg-red-700 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                onClick={handlePrintTable}
+                className="px-3.5 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>In trang này (A4)</span>
+                <span>In bảng kết quả</span>
+              </button>
+              <button
+                onClick={handleExportPDF}
+                disabled={isExportingPDF}
+                className="px-4 py-1.5 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
+              >
+                {isExportingPDF ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                <span>{isExportingPDF ? 'Đang tải...' : 'Tải File PDF (A4)'}</span>
               </button>
             </div>
           </div>
 
           {/* The Printable A4 Container */}
-          <div className="print-container bg-white text-black p-8 sm:p-12 max-w-4xl mx-auto rounded-2xl shadow-xl border border-slate-200">
+          <div ref={printableA4Ref} id="checklist-printable-a4" className="print-container bg-white text-black p-8 sm:p-12 max-w-4xl mx-auto rounded-2xl shadow-xl border border-slate-200">
             {/* 1. Phần đầu PDF */}
             <div className="border-b-2 border-slate-800 pb-4 mb-6">
               <div className="flex items-center justify-between">
