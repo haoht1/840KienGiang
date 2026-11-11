@@ -1,0 +1,6 @@
+{
+  "name": "VietinBank - Kiosk Tương Tác Khách Hàng Tại Quầy",
+  "description": "Ứng dụng web tương tác khách hàng và hỗ trợ nghiệp vụ tại quầy giao dịch VietinBank Chi nhánh Kiên Giang.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

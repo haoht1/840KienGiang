@@ -1,0 +1,948 @@
+{
+  "bankInfo": {
+    "brandName": "VietinBank",
+    "subTitle": "Nâng giá trị cuộc sống",
+    "fullName": "NGÂN HÀNG TMCP CÔNG THƯƠNG VIỆT NAM",
+    "branchName": "CHI NHÁNH KIÊN GIANG",
+    "advisorName": "Huỳnh Thái Hào",
+    "advisorTitle": "Cán bộ quan hệ khách hàng",
+    "advisorPhone": "0919131021",
+    "logoUrl": "https://raw.githubusercontent.com/haoht1/file_anh/refs/heads/main/logoVTB.jpg",
+    "bannerUrl": "https://raw.githubusercontent.com/haoht1/haoht1-demo1/refs/heads/main/IMG_3573.jpeg?token=GHSAT0AAAAAAEOPFY5BWYXLRDR2AXJG44ME2XUSEEQ",
+    "hotline": "1900 558 868",
+    "website": "https://www.vietinbank.vn"
+  },
+  "modules": [
+    { "id": "faq", "title": "Giải đáp thắc mắc", "icon": "HelpCircle", "description": "Hướng dẫn chi tiết sử dụng iPay & nghiệp vụ quầy" },
+    { "id": "ipay", "title": "Tải App VietinBank iPay", "icon": "Smartphone", "description": "Tải ứng dụng ngân hàng số thông minh trên iOS & Android" },
+    { "id": "games", "title": "Thử thách Game", "icon": "Gamepad2", "description": "Chơi vui tại quầy - Nhận ngay voucher xăng tiện ích" },
+    { "id": "savings", "title": "Tính lãi tiền gửi", "icon": "PiggyBank", "description": "Dự tính sinh lời cho các kỳ hạn gửi tiết kiệm" },
+    { "id": "loan", "title": "Lịch trả nợ khoản vay", "icon": "Calculator", "description": "Bảng tính gốc lãi theo dư nợ giảm dần chính xác" },
+    { "id": "products", "title": "Sản phẩm dịch vụ nổi bật", "icon": "Sparkles", "description": "Gói ưu đãi, mở tài khoản HKD, POS và tài sản đấu giá" },
+    { "id": "branches", "title": "Điểm giao dịch", "icon": "MapPin", "description": "Mạng lưới Chi nhánh & PGD VietinBank Kiên Giang" },
+    { "id": "checklist", "title": "Tạo checklist hồ sơ vay", "icon": "FileCheck", "description": "Công cụ lập danh mục hồ sơ tín dụng chuyên nghiệp chuẩn A4" }
+  ],
+  "faqData": {
+    "promptQuestion": "Anh/chị đang gặp khó khăn với nội dung nào?",
+    "supportContactMessage": "Cảm ơn Quý khách đã phản hồi. Quý khách có thể liên hệ Cán bộ quan hệ khách hàng Huỳnh Thái Hào – số điện thoại: 0919131021 để hỗ trợ trực tiếp. Em sẽ cố gắng cải thiện để phục vụ Quý khách tốt hơn!",
+    "endConversationMessage": "Cảm ơn Quý khách đã sử dụng dịch vụ của VietinBank. Chúc Quý khách một ngày tốt lành!",
+    "cards": [
+      {
+        "id": "faq-1",
+        "title": "Hướng dẫn quên mật khẩu iPay",
+        "summary": "Khôi phục mật khẩu tài khoản VietinBank iPay nhanh chóng chỉ với vài bước xác thực.",
+        "type": "steps",
+        "videoUrl": "https://www.youtube.com/watch?v=86r0pxPOzbs",
+        "embedVideoUrl": "https://www.youtube.com/embed/86r0pxPOzbs",
+        "steps": [
+          { "step": 1, "text": "Ở màn hình đăng nhập, chọn Quên mật khẩu.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.1.png" },
+          { "step": 2, "text": "Nhập tên đăng nhập và số điện thoại đăng ký sau đó bấm “Tiếp tục”.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.2.png" },
+          { "step": 3, "text": "Nhập mã OTP được gửi về tin nhắn SMS, sau đó bấm Tiếp tục.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.3.png" },
+          { "step": 4, "text": "Xác thực khuôn mặt theo yêu cầu. Sau khi hoàn thành iPay sẽ gửi mật khẩu mới về tin nhắn (SMS). Bấm đăng nhập iPay để tiếp tục.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.4.png" },
+          { "step": 5, "text": "Nhập mật khẩu theo yêu cầu. Mật khẩu hiện tại: Nhập theo mật khẩu được gửi về tin nhắn (SMS). Mật khẩu mới: Là mật khẩu mà khách hàng cần đổi. Bấm Tiếp tục.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.5.png" },
+          { "step": 6, "text": "Thực hiện quét khuôn mặt để xác nhận đổi mật khẩu thành công.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/1.6.png" }
+        ]
+      },
+      {
+        "id": "faq-2",
+        "title": "Hướng dẫn đóng thẻ",
+        "summary": "Thao tác chủ động đóng các loại thẻ thanh toán hoặc tín dụng trực tiếp trên ứng dụng iPay.",
+        "type": "steps",
+        "videoUrl": "https://www.youtube.com/watch?v=acdT3KxET40",
+        "embedVideoUrl": "https://www.youtube.com/embed/acdT3KxET40",
+        "steps": [
+          { "step": 1, "text": "Đăng nhập vào App VietinBank iPay.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.1.png" },
+          { "step": 2, "text": "Vào mục danh sách thẻ.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.2.png" },
+          { "step": 3, "text": "Xem đúng thẻ cần đóng, bấm vào phần xem thêm.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.3.png" },
+          { "step": 4, "text": "Chọn đóng thẻ.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.4.png" },
+          { "step": 5, "text": "Nhập mã OTP gửi về máy.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.5.png" },
+          { "step": 6, "text": "Xác nhận OTP để hoàn tất đóng thẻ.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/2.6.png" }
+        ]
+      },
+      {
+        "id": "faq-3",
+        "title": "Xác thực CCCD gắn chip",
+        "summary": "Hướng dẫn đọc chip NFC trên căn cước công dân khớp với Cơ sở dữ liệu Quốc gia về dân cư.",
+        "type": "steps",
+        "videoUrl": "https://www.youtube.com/watch?v=9yYn3SbMT9A",
+        "embedVideoUrl": "https://www.youtube.com/embed/9yYn3SbMT9A",
+        "steps": [
+          { "step": 1, "text": "Đăng nhập VietinBank iPay và chọn Cập nhật thông tin / Xác thực CCCD.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.1.png" },
+          { "step": 2, "text": "Click vào nút “Bắt đầu chụp”.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.2.png" },
+          { "step": 3, "text": "Chụp mặt trước căn cước công dân trong khung hình rõ nét.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.3.png" },
+          { "step": 4, "text": "Chụp mặt sau căn cước công dân rõ mã MRZ và chip.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.4.png" },
+          { "step": 5, "text": "Click vào nút “Đã hiểu” hướng dẫn đọc NFC.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.5.png" },
+          { "step": 6, "text": "Đưa gương mặt vào khung hình để xác thực khuôn mặt sinh trắc học.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.6.png" },
+          { "step": 7, "text": "Đặt mặt trước CCCD ngay mặt sau điện thoại để thiết bị đọc sóng NFC của thẻ.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.7.png" },
+          { "step": 8, "text": "Kiểm tra thông tin đã quét và bấm Tiếp tục để hoàn tất.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.8.png" }
+        ]
+      },
+      {
+        "id": "faq-4",
+        "title": "Hướng dẫn cập nhật sinh trắc học",
+        "summary": "Tuân thủ Quyết định 2345/QĐ-NHNN để đảm bảo an toàn giao dịch chuyển tiền trực tuyến.",
+        "type": "steps",
+        "videoUrl": "https://www.youtube.com/watch?v=9yYn3SbMT9A",
+        "embedVideoUrl": "https://www.youtube.com/embed/9yYn3SbMT9A",
+        "steps": [
+          { "step": 1, "text": "Đăng nhập VietinBank iPay, chọn tính năng Sinh trắc học.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.1.png" },
+          { "step": 2, "text": "Click vào “Bắt đầu chụp”.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.2.png" },
+          { "step": 3, "text": "Chụp mặt trước căn cước công dân gắn chip.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.3.png" },
+          { "step": 4, "text": "Chụp mặt sau căn cước công dân.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.4.png" },
+          { "step": 5, "text": "Click vào nút “Đã hiểu”.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.5.png" },
+          { "step": 6, "text": "Đưa gương mặt vào khung hình để nhận diện.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.6.png" },
+          { "step": 7, "text": "Đặt mặt trước CCCD ngay mặt sau điện thoại để đọc NFC.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.7.png" },
+          { "step": 8, "text": "Bấm tiếp tục để hệ thống ghi nhận thành công.", "image": "https://raw.githubusercontent.com/giadinhbanker/anh-super-app-bac-phu-tho/main/3.8.png" }
+        ]
+      },
+      {
+        "id": "faq-5",
+        "title": "Hướng dẫn nộp thuế điện tử trên VietinBank iPay",
+        "summary": "Truy vấn và thanh toán thuế nội địa, lệ phí trước bạ, thuế đất nhanh chóng qua kết nối Tổng cục Thuế.",
+        "type": "steps",
+        "videoUrl": "https://www.youtube.com/watch?v=ASKGDLi1tGE",
+        "embedVideoUrl": "https://www.youtube.com/embed/ASKGDLi1tGE",
+        "steps": [
+          { "step": 1, "text": "Đăng nhập ứng dụng VietinBank iPay.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.1.png" },
+          { "step": 2, "text": "Chọn [Tất cả dịch vụ].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.2.jpg" },
+          { "step": 3, "text": "Tại màn hình Tất cả dịch vụ, chọn [Dịch vụ thanh toán].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.3.jpg" },
+          { "step": 4, "text": "Chọn [Nộp thuế điện tử].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.4.jpg" },
+          { "step": 5, "text": "Chọn [Nộp thuế].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.5.jpg" },
+          { "step": 6, "text": "Tại màn hình Thuế nội địa, droplist [Hình thức nộp thuế].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.6.jpg" },
+          { "step": 7, "text": "Chọn [Tự kê khai] để nộp cho chính mình hoặc chọn [Nộp cho người khác]. Trường hợp chọn Truy vấn bằng Mã số thuế chính là số CCCD.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.7.jpg" },
+          { "step": 8, "text": "Nhấn button [Truy vấn].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.8.jpg" },
+          { "step": 9, "text": "Màn hình hiển thị thông tin người nộp thuế và danh sách các khoản chưa nộp. Chọn: [1. Tài khoản nguồn; 2. Thông tin người nộp thuế, người nộp thay].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.9.jpg" },
+          { "step": 10, "text": "Kiểm tra [Danh sách các khoản chưa nộp].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.10.jpg" },
+          { "step": 11, "text": "Kiểm tra [Thông tin người nộp thuế].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.11.jpg" },
+          { "step": 12, "text": "Kiểm tra [Số tiền thuế] và [Các thông tin liên quan đến món thuế cần nộp].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.12.jpg" },
+          { "step": 13, "text": "Kiểm tra thông tin và nhấn button [Nộp thuế].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.13.jpg" },
+          { "step": 14, "text": "Nhập OTP SMS hoặc Soft OTP.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.14.jpg" },
+          { "step": 15, "text": "Chọn [Xác nhận & Hoàn tất].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.15.jpg" },
+          { "step": 16, "text": "Nhận chứng từ nộp NSNN. Chọn tab [Lịch sử nộp thuế].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.16.jpg" },
+          { "step": 17, "text": "Chọn khoảng thời gian truy vấn >> Nhấn chọn [Áp dụng].", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.17.jpg" },
+          { "step": 18, "text": "Chọn [Chi tiết] để xem toàn bộ thông tin, trạng thái của món thuế.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.18.jpg" },
+          { "step": 19, "text": "Chọn button [Nhận chứng từ qua Email], có thể thay đổi Email nhận chứng từ.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.19.jpg" },
+          { "step": 20, "text": "Truy cập Email đã đăng ký để nhận Giấy nộp tiền vào NSNN.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Nop-thue-dien-tu/6.20.jpg" }
+        ]
+      },
+      {
+        "id": "faq-6",
+        "title": "Hướng dẫn đặt lịch qua VietinBank iPay",
+        "summary": "Chủ động chọn phòng giao dịch, ngày giờ hẹn để không phải chờ đợi tại quầy.",
+        "type": "steps",
+        "videoUrl": "",
+        "steps": [
+          { "step": 1, "text": "Truy cập ứng dụng VietinBank iPay và click vào thanh tìm kiếm.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.1.jpg" },
+          { "step": 2, "text": "Gõ “đặt lịch”.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.2.jpg" },
+          { "step": 3, "text": "Chọn “Thêm mới lịch hẹn”.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.3.jpg" },
+          { "step": 4, "text": "Click vào tab “Thông tin đặt lịch”.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.4.jpg" },
+          { "step": 5, "text": "Chọn “Loại dịch vụ”.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.5.jpg" },
+          { "step": 6, "text": "Chọn “Phòng giao dịch” và lựa chọn PGD gần bạn nhất.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.6.jpg" },
+          { "step": 7, "text": "Chọn giờ và ngày mong muốn giao dịch.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.7.jpg" },
+          { "step": 8, "text": "Nhìn lại ngày và giờ và điều chỉnh (nếu có).", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.8.jpg" },
+          { "step": 9, "text": "Chốt ngày và giờ đặt lịch, và click “Xác nhận đặt lịch”.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.9.jpg" },
+          { "step": 10, "text": "Lưu ảnh ngày đặt lịch để xuất trình khi đến quầy.", "image": "https://pub-8db548912e6649bbabeb3b571024571e.r2.dev/Giai-dap-thac-mac/Dat-lich/4.10.jpg" }
+        ]
+      },
+      {
+        "id": "faq-7",
+        "title": "Hướng dẫn Giải ngân Online SXKD trên VietinBank iPay",
+        "summary": "Thủ tục nhận giải ngân tức thời nguồn vốn vay sản xuất kinh doanh ngay trên iPay.",
+        "type": "video_direct",
+        "videoUrl": "https://youtu.be/jpN-TbJ0XjI?si=RYjgykofVNZ9xHVN",
+        "embedVideoUrl": "https://www.youtube.com/embed/jpN-TbJ0XjI",
+        "description": "Video trực quan toàn bộ quy trình giải ngân vốn vay hạn mức sản xuất kinh doanh online 24/7 trên iPay Mobile."
+      },
+      {
+        "id": "faq-8",
+        "title": "Hướng dẫn trả góp trên VietinBank iPay",
+        "summary": "Chuyển đổi giao dịch chi tiêu thẻ tín dụng sang trả góp lãi suất ưu đãi nhanh chóng.",
+        "type": "video_direct",
+        "videoUrl": "https://youtube.com/shorts/WpogkqJxPl8?si=CeCxDu3sx2_ZaVSc",
+        "embedVideoUrl": "https://www.youtube.com/embed/WpogkqJxPl8",
+        "description": "Video ngắn hướng dẫn từng bước kích hoạt gói trả góp 0% / ưu đãi cho các giao dịch thẻ tín dụng VietinBank."
+      },
+      {
+        "id": "faq-9",
+        "title": "Hướng dẫn mở tài khoản thanh toán và thẻ bằng CCCD gắn chip",
+        "summary": "Đăng ký eKYC định danh điện tử, nhận ngay số tài khoản đẹp và thẻ phi vật lý chỉ trong 1 phút.",
+        "type": "video_direct",
+        "videoUrl": "https://youtu.be/GlDbmqzf9mQ?si=dO0KMoQENJWqNdkg",
+        "embedVideoUrl": "https://www.youtube.com/embed/GlDbmqzf9mQ",
+        "description": "Video chi tiết hướng dẫn khách hàng mới mở tài khoản số và phát hành thẻ trực tuyến bằng CCCD gắn chip."
+      }
+    ]
+  },
+  "ipayData": {
+    "title": "VietinBank iPay Mobile",
+    "subtitle": "Vạn năng tiện ích - Trọn vẹn trải nghiệm ngân hàng số",
+    "description": "Ứng dụng ngân hàng số thông minh phục vụ hơn 15 triệu khách hàng: Chuyển tiền miễn phí 24/7, gửi tiết kiệm sinh lời cao, nộp thuế số, thanh toán hóa đơn, đặt vé tàu xe máy bay và quản lý tài chính an toàn tuyệt đối.",
+    "ios": {
+      "name": "Tải trên Apple App Store (iPhone / iPad)",
+      "url": "https://apps.apple.com/vn/app/vietinbank-ipay/id689963454?l=vi",
+      "qrUrl": "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fapps.apple.com%2Fvn%2Fapp%2Fvietinbank-ipay%2Fid689963454%3Fl%3Dvi"
+    },
+    "android": {
+      "name": "Tải trên Google Play Store (Android)",
+      "url": "https://play.google.com/store/apps/details?id=com.vietinbank.ipay",
+      "qrUrl": "https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dcom.vietinbank.ipay"
+    },
+    "keyFeatures": [
+      { "title": "Miễn phí 100%", "desc": "Chuyển khoản liên ngân hàng 24/7, duy trì dịch vụ, phí mở số tài khoản" },
+      { "title": "Sinh trắc học FacePay", "desc": "Bảo mật chuẩn Quyết định 2345/QĐ-NHNN với nhận diện khuôn mặt và CCCD gắn chip" },
+      { "title": "Tiết kiệm trực tuyến", "desc": "Cộng thêm lãi suất ưu đãi so với tại quầy, linh hoạt rút gốc từng phần" },
+      { "title": "Hệ sinh thái tiện ích", "desc": "Nộp thuế điện tử, đặt vé máy bay, phòng khách sạn, giao hoa, taxi, movie ticket" }
+    ]
+  },
+  "gamesData": {
+    "flappy": {
+      "title": "Chờ vui – Chơi hay – Nhận quà liền tay",
+      "subTitle": "Vượt qua 20 thử thách để nhận voucher 2 lít xăng",
+      "winScore": 20,
+      "voucherText": "Voucher 2 lít xăng",
+      "instructions": "Chạm màn hình hoặc nhấn phím Space để nhân vật bay lên. Tránh các cột chướng ngại vật!",
+      "milestones": [
+        { "min": 0, "max": 4, "message": "Khởi động nhẹ nhàng!" },
+        { "min": 5, "max": 9, "message": "Tốt lắm, tiếp tục nào!" },
+        { "min": 10, "max": 14, "message": "Một nửa chặng đường rồi!" },
+        { "min": 15, "max": 19, "message": "Sắp nhận quà rồi!" },
+        { "min": 20, "max": 999, "message": "Xuất sắc!" }
+      ]
+    },
+    "snake": {
+      "title": "VietinBank Snake Challenge",
+      "subTitle": "Chơi vui tại quầy – Săn voucher xăng hấp dẫn",
+      "instructions": "Dùng phím mũi tên hoặc nút điều hướng ảo để ăn đồng xu vàng VietinBank. Đạt 20 điểm nhận 1 voucher 2 lít, đạt 40 điểm nhận 2 voucher 2 lít xăng!",
+      "rewards": [
+        { "score": 20, "label": "01 voucher xăng 2 lít" },
+        { "score": 40, "label": "02 voucher xăng (mỗi voucher 2 lít)" }
+      ]
+    }
+  },
+  "savingsData": {
+    "title": "Công cụ tính lãi suất tiền gửi",
+    "subTitle": "Sản phẩm tiền gửi thông thường - Trả lãi sau",
+    "videoGuideUrl": "https://www.tiktok.com/@nguyentrangtkneu/video/7202579533806062875?is_from_webapp=1&sender_device=pc&web_id=7603681770291086866",
+    "defaultDeposit": 100000000,
+    "minDeposit": 100000,
+    "termOptions": [
+      { "months": 1, "label": "1 Tháng", "rate": 1.7 },
+      { "months": 2, "label": "2 Tháng", "rate": 1.7 },
+      { "months": 3, "label": "3 Tháng", "rate": 2.0 },
+      { "months": 6, "label": "6 Tháng", "rate": 3.0 },
+      { "months": 9, "label": "9 Tháng", "rate": 3.0 },
+      { "months": 12, "label": "12 Tháng", "rate": 4.7 },
+      { "months": 18, "label": "18 Tháng", "rate": 4.7 },
+      { "months": 24, "label": "24 Tháng", "rate": 4.8 },
+      { "months": 36, "label": "36 Tháng", "rate": 4.8 }
+    ]
+  },
+  "loanData": {
+    "title": "Bảng tính lãi suất vay và Lịch trả nợ",
+    "subTitle": "Phương thức trả gốc đều, lãi tính trên dư nợ giảm dần",
+    "defaultAmount": 6666666667,
+    "defaultTerm": 240,
+    "defaultRate": 8.0,
+    "cycleOptions": [
+      { "value": "monthly", "label": "Hằng tháng (12 kỳ/năm)", "divisor": 12 },
+      { "value": "quarterly", "label": "Hằng quý (4 kỳ/năm)", "divisor": 4 },
+      { "value": "semiannual", "label": "6 tháng (2 kỳ/năm)", "divisor": 2 },
+      { "value": "annual", "label": "Hằng năm (1 kỳ/năm)", "divisor": 1 }
+    ],
+    "roundingOptions": [
+      { "value": "1", "label": "Làm tròn đến 1 đồng" },
+      { "value": "1000", "label": "Làm tròn đến 1.000 đồng" }
+    ]
+  },
+  "featuredProducts": {
+    "title": "Sản phẩm dịch vụ nổi bật",
+    "description": "Khám phá các sản phẩm, ưu đãi và tiện ích VietinBank đang được giới thiệu tại chi nhánh Kiên Giang.",
+    "consultModalMessage": "Cảm ơn Quý khách đã quan tâm đến sản phẩm/dịch vụ này. Quý khách vui lòng liên hệ cán bộ VietinBank tại quầy để được tư vấn chi tiết.\nHoặc liên hệ Chuyên viên tư vấn Huỳnh Thái Hào - 0919131021.",
+    "categories": [
+      { "id": "all", "label": "Tất cả" },
+      { "id": "personal", "label": "Cá nhân" },
+      { "id": "hkd", "label": "Hộ kinh doanh" },
+      { "id": "corporate", "label": "Doanh nghiệp" },
+      { "id": "promotions", "label": "Ưu đãi" },
+      { "id": "auction", "label": "Đấu giá tài sản" }
+    ],
+    "items": [
+      {
+        "id": "p-1",
+        "category": "hkd",
+        "title": "Mở tài khoản hộ kinh doanh",
+        "badge": "Nổi bật",
+        "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/Tai-khoan-hkd.png",
+        "description": "Tài khoản kinh doanh thông minh với nhiều tiện ích vượt trội, miễn phí quản lý và số tài khoản đẹp phong thủy."
+      },
+      {
+        "id": "p-2",
+        "category": "personal",
+        "title": "Chạm POS rút tiền",
+        "badge": "Tiện ích số",
+        "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/Rut-ten-tra-gop.png",
+        "description": "Giải pháp rút tiền mặt và chuyển đổi trả góp linh hoạt ngay trên thiết bị POS hiện đại của VietinBank."
+      },
+      {
+        "id": "p-3",
+        "category": "corporate",
+        "title": "Sản phẩm thu hộ KHDN",
+        "badge": "Giải pháp DN",
+        "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/Quan-ly-kpt.png",
+        "description": "Hệ thống quản lý khoản phải thu, kết nối trực tiếp cổng thanh toán VietinBank giúp tối ưu dòng tiền doanh nghiệp."
+      },
+      {
+        "id": "p-4",
+        "category": "promotions",
+        "title": "Ưu đãi đang triển khai",
+        "badge": "Hot",
+        "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/Uu-dai.png",
+        "description": "Các chương trình khuyến mãi lãi suất tiền vay, hoàn tiền thẻ tín dụng và quà tặng độc quyền tại chi nhánh."
+      },
+      {
+        "id": "p-5",
+        "category": "auction",
+        "title": "Bán đấu giá tài sản bảo đảm (Đợt 1)",
+        "badge": "Minh bạch",
+        "imageUrl": "https://raw.githubusercontent.com/haoht1/haoht1-demo1/refs/heads/main/IMG_0663.JPG",
+        "description": "Thông báo bán đấu giá công khai các tài sản bảo đảm chất lượng pháp lý rõ ràng, giá khởi điểm hấp dẫn."
+      },
+      {
+        "id": "p-6",
+        "category": "auction",
+        "title": "Bán đấu giá tài sản bảo đảm (Đợt 2)",
+        "badge": "Minh bạch",
+        "imageUrl": "https://raw.githubusercontent.com/haoht1/haoht1-demo1/refs/heads/main/IMG_0664.JPG",
+        "description": "Danh mục tài sản bất động sản và phương tiện cơ giới thanh lý theo quy định của VietinBank Chi nhánh Kiên Giang."
+      }
+    ]
+  },
+  "branchLocations": [
+    {
+      "id": 1,
+      "name": "Chi nhánh Kiên Giang",
+      "address": "Số D11-5B Đường 3 Tháng 2, Phường Rạch Giá, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/KWUn89DdngpzYfUa7",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/CN-Kien-Giang.png",
+      "phone": "0297.3866432"
+    },
+    {
+      "id": 2,
+      "name": "PGD Rạch Giá",
+      "address": "Số 63 Đường Lê Lợi, Phường Rạch Giá, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/EWGL2u9AzwGx99p46",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Rach-Gia.jpeg",
+      "phone": "0297.3863587"
+    },
+    {
+      "id": 3,
+      "name": "PGD Rạch Sỏi",
+      "address": "Số 15 Đường Mai Thị Hồng Hạnh, Phường Rạch Giá, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/dM1Uw4CGwwJBfx7P8",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Rach-Soi.jpeg",
+      "phone": "0297.3864072"
+    },
+    {
+      "id": 4,
+      "name": "PGD Hòn Đất",
+      "address": "Số 61, Khu Phố Đường Hòn, Xã Hòn Đất, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/q5whKW6GwVrfCXem8",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Hon-Dat.jpeg",
+      "phone": "0297.3779678"
+    },
+    {
+      "id": 5,
+      "name": "PGD Kiên Lương",
+      "address": "Số 240 Đường Quốc lộ 80, Khu phố Lò Bom, Xã Kiên Lương, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/gVMnHTPQWhTCebcG8",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Kien-Luong.png",
+      "phone": "0297.3779678"
+    },
+    {
+      "id": 6,
+      "name": "PGD Tân Hiệp",
+      "address": "Số 23, Khu phố B, Xã Tân Hiệp, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/Gi7iphnaqzFY6S3T9",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Tan-Hiep.jpeg",
+      "phone": "0297.3727816"
+    },
+    {
+      "id": 7,
+      "name": "PGD Giồng Riềng",
+      "address": "Khu phố 6, Xã Giồng Riềng, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/5mGdwkL7rX8ao28o9",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-Giong-Rieng.jpeg",
+      "phone": "0297.3647877"
+    },
+    {
+      "id": 8,
+      "name": "PGD An Biên",
+      "address": "Số 46A Đường Quốc lộ 63, Tổ 1, Khu phố 5, Xã An Biên, Tỉnh An Giang",
+      "mapsUrl": "https://maps.app.goo.gl/enbyQ3y68gFdU45K7",
+      "hours": "Sáng: 7h30-11h30 / Chiều: 13h30-16h45",
+      "imageUrl": "https://raw.githubusercontent.com/lhhiep161/anh-super-app/main/cn-kien-giang/PGD-An-Bien.jpeg",
+      "phone": "0297.3777866"
+    }
+  ],
+  "checklistData": {
+    "header": {
+      "brand": "VIETINBANK",
+      "bankTitle": "NGÂN HÀNG TMCP CÔNG THƯƠNG VIỆT NAM",
+      "branch": "CHI NHÁNH KIÊN GIANG",
+      "documentTitle": "DANH MỤC HỒ SƠ KHÁCH HÀNG CẦN CUNG CẤP",
+      "documentSubtitle": "PHỤC VỤ NHU CẦU VAY VỐN"
+    },
+    "disclaimer": "Danh mục hồ sơ trên được lập căn cứ theo nhu cầu vay vốn và thông tin khách hàng tại thời điểm tiếp nhận. Trong quá trình xác minh, thẩm định và hoàn thiện hồ sơ tín dụng, Ngân hàng có thể yêu cầu khách hàng bổ sung các giấy tờ, tài liệu liên quan khác tùy theo tình hình thực tế.",
+    "salutations": ["Ông", "Bà", "Anh", "Chị", "Công ty", "Doanh nghiệp", "Khác"],
+    "customerTypes": [
+      { "id": "personal", "label": "Khách hàng cá nhân" },
+      { "id": "corporate", "label": "Khách hàng doanh nghiệp" }
+    ],
+    "personalPurposes": [
+      { "id": "V01", "name": "Vay sản xuất kinh doanh" },
+      { "id": "V02", "name": "Vay mua bất động sản" },
+      { "id": "V03", "name": "Vay mua xe ô tô" },
+      { "id": "V04", "name": "Vay thấu chi" },
+      { "id": "V05", "name": "Vay tiêu dùng" },
+      { "id": "V06", "name": "Vay phát hành thẻ tín dụng quốc tế" },
+      { "id": "V07", "name": "Vay sửa chữa nhà" },
+      { "id": "V08", "name": "Mục đích vay khác (nhập thủ công)" }
+    ],
+    "corporateTypes": [
+      "Công ty TNHH",
+      "Công ty cổ phần",
+      "Doanh nghiệp tư nhân",
+      "Hợp tác xã",
+      "Loại hình khác (nhập thủ công)"
+    ],
+    "corporatePurposes": [
+      { "id": "DN01", "name": "Vay bổ sung vốn lưu động sản xuất kinh doanh" },
+      { "id": "DN02", "name": "Vay đầu tư tài sản cố định" },
+      { "id": "DN03", "name": "Vay mua bất động sản" },
+      { "id": "DN04", "name": "Vay mua xe ô tô, phương tiện vận tải" },
+      { "id": "DN05", "name": "Vay đầu tư máy móc, thiết bị, dây chuyền sản xuất" },
+      { "id": "DN06", "name": "Vay thấu chi doanh nghiệp" },
+      { "id": "DN07", "name": "Vay dự án đầu tư" },
+      { "id": "DN08", "name": "Mục đích vay khác (nhập thủ công)" }
+    ],
+    "masterCatalog": {
+      "personal": {
+        "legal": [
+          "Căn cước công dân người vay",
+          "Căn cước công dân người đồng vay",
+          "Màn hình thông tin cư trú (trên VNeID hoặc văn bản)",
+          "Giấy chứng nhận kết hôn",
+          "Giấy xác nhận tình trạng hôn nhân",
+          "CCCD vợ/chồng người vay",
+          "Giấy khai sinh người có liên quan"
+        ],
+        "loanPurposes": {
+          "V01": [
+            "Giấy chứng nhận đăng ký hộ kinh doanh",
+            "Giấy xác nhận kinh doanh",
+            "Hợp đồng thuê mặt bằng kinh doanh",
+            "Hợp đồng mua bán hàng hóa",
+            "Hợp đồng cung cấp hàng hóa, dịch vụ",
+            "Hóa đơn mua hàng",
+            "Hóa đơn bán hàng",
+            "Phương án sản xuất kinh doanh",
+            "Bảng kê chi phí kinh doanh",
+            "Bảng kê hàng tồn kho",
+            "Bảng kê công nợ phải thu, phải trả",
+            "Báo giá hàng hóa, nguyên vật liệu",
+            "Chứng từ chứng minh mục đích sử dụng vốn"
+          ],
+          "V02": [
+            "Hợp đồng đặt cọc mua bán bất động sản",
+            "Hợp đồng chuyển nhượng quyền sử dụng đất",
+            "Hợp đồng mua bán nhà ở",
+            "Giấy chứng nhận quyền sử dụng đất của bất động sản nhận chuyển nhượng",
+            "Giấy tờ pháp lý của bên bán",
+            "Chứng từ thanh toán tiền đặt cọc",
+            "Chứng từ chứng minh vốn tự có",
+            "Hồ sơ pháp lý dự án (nếu có)"
+          ],
+          "V03": [
+            "Hợp đồng mua bán xe ô tô",
+            "Báo giá xe ô tô",
+            "Phiếu đặt cọc mua xe",
+            "Chứng từ thanh toán tiền đặt cọc",
+            "Thông tin đại lý bán xe",
+            "Chứng từ chứng minh vốn tự có",
+            "Giấy chứng nhận đăng ký xe (nếu đã có)"
+          ],
+          "V04": [
+            "Đơn đề nghị cấp hạn mức thấu chi",
+            "Hồ sơ chứng minh nhu cầu sử dụng hạn mức",
+            "Sao kê tài khoản thanh toán",
+            "Hồ sơ chứng minh nguồn thu nhập",
+            "Hồ sơ tài sản bảo đảm (nếu áp dụng)"
+          ],
+          "V05": [
+            "Đơn đề nghị vay vốn",
+            "Phương án sử dụng vốn",
+            "Báo giá hàng hóa, dịch vụ",
+            "Hợp đồng mua bán hàng hóa, dịch vụ",
+            "Chứng từ thanh toán"
+          ],
+          "V06": [
+            "Đơn đề nghị phát hành thẻ",
+            "Hồ sơ pháp lý cá nhân",
+            "Hồ sơ chứng minh thu nhập",
+            "Hồ sơ chứng minh công việc",
+            "Hồ sơ tài sản bảo đảm (nếu phát hành thẻ có bảo đảm)"
+          ],
+          "V07": [
+            "Giấy chứng nhận quyền sử dụng đất và quyền sở hữu nhà ở/công trình",
+            "Hợp đồng thi công sửa chữa nhà",
+            "Biên bản nghiệm thu công trình/hạng mục sửa chữa",
+            "Chứng từ thanh toán chi phí sửa chữa",
+            "Báo giá sửa chữa, dự toán chi phí thi công",
+            "Bản vẽ thiết kế sửa chữa (nếu có)",
+            "Giấy phép sửa chữa, cải tạo (nếu thuộc trường hợp phải có)",
+            "Hình ảnh hiện trạng nhà trước khi sửa chữa (nếu cần)",
+            "Hình ảnh quá trình và kết quả sửa chữa (nếu cần)"
+          ]
+        },
+        "incomeGroups": [
+          {
+            "name": "Nhóm 1 – Thu nhập từ tiền lương, tiền công",
+            "items": [
+              "Quyết định tuyển dụng",
+              "Quyết định bổ nhiệm",
+              "Quyết định công tác",
+              "Quyết định nâng lương",
+              "Hợp đồng lao động",
+              "Xác nhận công tác",
+              "Bảng lương 03 tháng gần nhất",
+              "Sao kê tài khoản nhận lương 03 tháng gần nhất",
+              "Phiếu lương",
+              "Quyết định hưởng lương hưu",
+              "Sao kê tài khoản nhận lương hưu"
+            ]
+          },
+          {
+            "name": "Nhóm 2 – Thu nhập từ kinh doanh hộ cá thể",
+            "items": [
+              "Giấy chứng nhận đăng ký hộ kinh doanh",
+              "Giấy xác nhận địa điểm kinh doanh",
+              "Báo cáo kết quả hoạt động kinh doanh",
+              "Bảng kê doanh thu kinh doanh",
+              "Bảng kê chi phí kinh doanh",
+              "Sổ sách ghi chép mua bán hàng hóa",
+              "Hóa đơn đầu vào",
+              "Hóa đơn đầu ra",
+              "Sao kê tài khoản thanh toán của hộ kinh doanh",
+              "Sao kê tài khoản cá nhân có phát sinh doanh thu kinh doanh",
+              "Hợp đồng mua bán hàng hóa",
+              "Hình ảnh cửa hàng, cơ sở kinh doanh",
+              "Hợp đồng thuê mặt bằng kinh doanh"
+            ]
+          },
+          {
+            "name": "Nhóm 3 – Thu nhập từ cho thuê tài sản",
+            "items": [
+              "Giấy chứng nhận quyền sử dụng đất và tài sản gắn liền với đất",
+              "Hợp đồng cho thuê nhà",
+              "Hợp đồng cho thuê đất",
+              "Hợp đồng cho thuê mặt bằng",
+              "Hợp đồng cho thuê xe ô tô",
+              "Sao kê tài khoản nhận tiền cho thuê",
+              "Biên nhận thanh toán tiền thuê",
+              "Chứng từ nộp thuế từ hoạt động cho thuê tài sản",
+              "Hình ảnh tài sản đang cho thuê"
+            ]
+          },
+          {
+            "name": "Nhóm 4 – Thu nhập từ góp vốn, cổ tức, đầu tư",
+            "items": [
+              "Giấy chứng nhận góp vốn",
+              "Điều lệ công ty",
+              "Danh sách thành viên góp vốn/cổ đông",
+              "Biên bản họp phân chia lợi nhuận",
+              "Nghị quyết/quyết định chia cổ tức",
+              "Chứng từ nhận cổ tức",
+              "Sao kê tài khoản nhận cổ tức",
+              "Báo cáo tài chính của doanh nghiệp có vốn góp",
+              "Giấy xác nhận phần vốn góp"
+            ]
+          },
+          {
+            "name": "Nhóm 5 – Thu nhập khác",
+            "items": [
+              "Quyết định hưởng lương hưu",
+              "Giấy xác nhận trợ cấp",
+              "Hợp đồng hợp tác kinh doanh",
+              "Chứng từ nhận tiền hợp tác kinh doanh",
+              "Hợp đồng cung cấp dịch vụ",
+              "Sao kê tài khoản nhận thu nhập",
+              "Giấy xác nhận nguồn thu nhập khác"
+            ]
+          }
+        ],
+        "collateralGroups": [
+          {
+            "name": "Nhóm 1 – Bất động sản",
+            "items": [
+              "Giấy chứng nhận quyền sử dụng đất",
+              "Giấy chứng nhận quyền sử dụng đất và tài sản gắn liền với đất",
+              "Hồ sơ hoàn công nhà ở (nếu có)",
+              "Giấy phép xây dựng (nếu có)",
+              "Hồ sơ mua bán/chuyển nhượng bất động sản",
+              "Hồ sơ thừa kế, tặng cho (nếu có)",
+              "Giấy tờ pháp lý liên quan đến đồng sở hữu",
+              "Hồ sơ quy hoạch (nếu cần)",
+              "Hồ sơ pháp lý khác liên quan đến bất động sản"
+            ]
+          },
+          {
+            "name": "Nhóm 2 – Xe ô tô, phương tiện vận tải",
+            "items": [
+              "Giấy chứng nhận đăng ký xe ô tô",
+              "Giấy chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường",
+              "Hợp đồng mua bán xe",
+              "Hóa đơn mua xe",
+              "Giấy chứng nhận nguồn gốc xe",
+              "Hồ sơ đăng ký xe",
+              "Giấy chứng nhận sở hữu phương tiện vận tải",
+              "Hồ sơ bảo hiểm xe (nếu có)"
+            ]
+          },
+          {
+            "name": "Nhóm 3 – Tiền gửi, giấy tờ có giá",
+            "items": [
+              "Sổ tiết kiệm",
+              "Thẻ tiết kiệm",
+              "Chứng nhận tiền gửi",
+              "Giấy tờ có giá",
+              "Trái phiếu",
+              "Chứng từ xác nhận quyền sở hữu giấy tờ có giá"
+            ]
+          },
+          {
+            "name": "Nhóm 4 – Máy móc, thiết bị, dây chuyền sản xuất",
+            "items": [
+              "Giấy chứng nhận quyền sở hữu máy móc thiết bị",
+              "Hóa đơn mua máy móc thiết bị",
+              "Hợp đồng mua bán máy móc thiết bị",
+              "Hồ sơ nhập khẩu máy móc thiết bị",
+              "Tờ khai hải quan (nếu có)",
+              "Biên bản bàn giao, nghiệm thu",
+              "Giấy chứng nhận chất lượng, xuất xứ (nếu có)",
+              "Hồ sơ dây chuyền sản xuất",
+              "Hình ảnh máy móc, thiết bị"
+            ]
+          }
+        ]
+      },
+      "corporate": {
+        "legalGeneral": [
+          "Giấy chứng nhận đăng ký doanh nghiệp",
+          "Điều lệ công ty",
+          "Giấy chứng nhận đăng ký thuế hoặc thông tin đăng ký thuế",
+          "Căn cước công dân người đại diện theo pháp luật",
+          "Căn cước công dân chủ sở hữu doanh nghiệp",
+          "Căn cước công dân thành viên góp vốn",
+          "Căn cước công dân cổ đông liên quan",
+          "Quyết định bổ nhiệm Giám đốc/Tổng Giám đốc",
+          "Quyết định bổ nhiệm Kế toán trưởng (nếu có)",
+          "Giấy chứng nhận đăng ký hoạt động chi nhánh",
+          "Giấy chứng nhận đăng ký địa điểm kinh doanh",
+          "Giấy phép kinh doanh ngành nghề có điều kiện (nếu có)",
+          "Giấy chứng nhận đủ điều kiện kinh doanh (nếu có)",
+          "Văn bản ủy quyền của người đại diện theo pháp luật (nếu có)",
+          "Nghị quyết/Quyết định về việc vay vốn và sử dụng tài sản bảo đảm"
+        ],
+        "legalByType": {
+          "Công ty TNHH": [
+            "Danh sách thành viên góp vốn",
+            "Giấy chứng nhận phần vốn góp",
+            "Sổ đăng ký thành viên",
+            "Quyết định của chủ sở hữu về việc vay vốn (TNHH một thành viên)",
+            "Biên bản họp Hội đồng thành viên (nếu cần)",
+            "Nghị quyết Hội đồng thành viên (nếu cần)",
+            "Hồ sơ thay đổi thành viên góp vốn (nếu có)"
+          ],
+          "Công ty cổ phần": [
+            "Danh sách cổ đông sáng lập",
+            "Danh sách cổ đông hiện hữu",
+            "Sổ đăng ký cổ đông",
+            "Giấy chứng nhận sở hữu cổ phần (nếu có)",
+            "Biên bản họp Đại hội đồng cổ đông (nếu cần)",
+            "Nghị quyết Đại hội đồng cổ đông (nếu cần)",
+            "Biên bản họp Hội đồng quản trị (nếu cần)",
+            "Nghị quyết Hội đồng quản trị (nếu cần)",
+            "Hồ sơ thay đổi cổ đông (nếu có)"
+          ],
+          "Doanh nghiệp tư nhân": [
+            "Căn cước công dân chủ doanh nghiệp tư nhân",
+            "Hồ sơ xác định chủ doanh nghiệp",
+            "Quyết định bổ nhiệm người quản lý (nếu có)",
+            "Văn bản ủy quyền quản lý, điều hành (nếu có)"
+          ],
+          "Hợp tác xã": [
+            "Giấy chứng nhận đăng ký hợp tác xã",
+            "Điều lệ hợp tác xã",
+            "Danh sách thành viên hợp tác xã",
+            "Danh sách Hội đồng quản trị",
+            "Biên bản Đại hội thành viên",
+            "Nghị quyết Đại hội thành viên",
+            "Quyết định bổ nhiệm Giám đốc",
+            "Quyết định bổ nhiệm Chủ tịch Hội đồng quản trị",
+            "Hồ sơ góp vốn của thành viên"
+          ]
+        },
+        "loanPurposes": {
+          "DN01": [
+            "Phương án sản xuất kinh doanh",
+            "Kế hoạch sử dụng vốn vay",
+            "Bảng dự toán nhu cầu vốn lưu động",
+            "Hợp đồng đầu vào",
+            "Hợp đồng đầu ra",
+            "Hợp đồng mua bán hàng hóa",
+            "Hợp đồng cung cấp dịch vụ",
+            "Đơn đặt hàng của khách hàng",
+            "Báo giá hàng hóa, nguyên vật liệu",
+            "Hóa đơn mua hàng",
+            "Hóa đơn bán hàng",
+            "Bảng kê hàng tồn kho",
+            "Bảng kê công nợ phải thu",
+            "Bảng kê công nợ phải trả",
+            "Bảng kê chi phí sản xuất kinh doanh",
+            "Chứng từ chứng minh vốn tự có tham gia phương án (nếu có)"
+          ],
+          "DN02": [
+            "Phương án đầu tư tài sản cố định",
+            "Kế hoạch sử dụng vốn vay",
+            "Dự toán tổng mức đầu tư",
+            "Báo giá tài sản dự kiến đầu tư",
+            "Hợp đồng mua bán tài sản",
+            "Hóa đơn mua tài sản",
+            "Hồ sơ chứng minh vốn tự có tham gia đầu tư",
+            "Chứng từ thanh toán",
+            "Hồ sơ bàn giao, nghiệm thu tài sản"
+          ],
+          "DN03": [
+            "Phương án mua bất động sản",
+            "Hợp đồng đặt cọc",
+            "Hợp đồng chuyển nhượng quyền sử dụng đất",
+            "Hợp đồng mua bán nhà, công trình",
+            "Giấy chứng nhận quyền sử dụng đất",
+            "Hồ sơ pháp lý bên chuyển nhượng",
+            "Hồ sơ pháp lý dự án (nếu có)",
+            "Chứng từ thanh toán tiền đặt cọc",
+            "Chứng từ chứng minh vốn tự có"
+          ],
+          "DN04": [
+            "Phương án mua xe/phương tiện vận tải",
+            "Báo giá xe",
+            "Hợp đồng mua bán xe",
+            "Phiếu đặt cọc",
+            "Hóa đơn mua xe",
+            "Chứng từ thanh toán tiền đặt cọc",
+            "Hồ sơ chứng minh vốn tự có",
+            "Hồ sơ đăng ký phương tiện (nếu đã có)"
+          ],
+          "DN05": [
+            "Phương án đầu tư máy móc thiết bị",
+            "Báo giá máy móc thiết bị",
+            "Hợp đồng mua bán máy móc thiết bị",
+            "Hóa đơn mua máy móc thiết bị",
+            "Hồ sơ xuất xứ hàng hóa",
+            "Hồ sơ chất lượng thiết bị",
+            "Tờ khai hải quan (nếu nhập khẩu)",
+            "Hồ sơ lắp đặt, vận hành",
+            "Biên bản nghiệm thu, bàn giao",
+            "Chứng từ thanh toán",
+            "Hồ sơ chứng minh vốn tự có"
+          ],
+          "DN06": [
+            "Đơn đề nghị cấp hạn mức thấu chi",
+            "Phương án sử dụng hạn mức",
+            "Kế hoạch dòng tiền",
+            "Hợp đồng kinh tế đầu vào, đầu ra",
+            "Sao kê tài khoản thanh toán",
+            "Bảng kê công nợ phải thu, phải trả",
+            "Hồ sơ chứng minh nguồn trả nợ",
+            "Hồ sơ tài sản bảo đảm (nếu áp dụng)"
+          ],
+          "DN07": [
+            "Báo cáo nghiên cứu khả thi (nếu có)",
+            "Báo cáo kinh tế kỹ thuật (nếu có)",
+            "Quyết định chủ trương đầu tư (nếu thuộc trường hợp phải có)",
+            "Giấy chứng nhận đăng ký đầu tư (nếu có)",
+            "Quyết định phê duyệt dự án",
+            "Tổng mức đầu tư dự án",
+            "Phương án tài chính dự án",
+            "Phương án trả nợ",
+            "Hồ sơ pháp lý đất thực hiện dự án",
+            "Giấy phép xây dựng (nếu có)",
+            "Thiết kế, dự toán công trình",
+            "Hợp đồng thi công xây dựng",
+            "Hợp đồng mua sắm thiết bị",
+            "Tiến độ thực hiện dự án"
+          ]
+        },
+        "financialGroups": [
+          {
+            "name": "Nhóm 1 – Báo cáo tài chính",
+            "items": [
+              "Báo cáo tài chính năm gần nhất",
+              "Báo cáo tài chính 02 năm gần nhất",
+              "Báo cáo tài chính 03 năm gần nhất",
+              "Báo cáo tài chính quý gần nhất",
+              "Bảng cân đối kế toán",
+              "Báo cáo kết quả hoạt động kinh doanh",
+              "Báo cáo lưu chuyển tiền tệ",
+              "Thuyết minh báo cáo tài chính",
+              "Báo cáo tài chính đã được kiểm toán (nếu có)"
+            ]
+          },
+          {
+            "name": "Nhóm 2 – Hồ sơ kê khai thuế",
+            "items": [
+              "Tờ khai thuế giá trị gia tăng",
+              "Tờ khai quyết toán thuế thu nhập doanh nghiệp",
+              "Tờ khai thuế thu nhập cá nhân (nếu liên quan)",
+              "Báo cáo tình hình sử dụng hóa đơn (nếu áp dụng)",
+              "Chứng từ nộp thuế",
+              "Thông báo nghĩa vụ thuế"
+            ]
+          },
+          {
+            "name": "Nhóm 3 – Hồ sơ dòng tiền và doanh thu",
+            "items": [
+              "Sao kê tài khoản thanh toán tại VietinBank",
+              "Sao kê tài khoản thanh toán tại ngân hàng khác",
+              "Sao kê tài khoản chuyên thu",
+              "Bảng kê doanh thu bán hàng",
+              "Bảng kê doanh thu cung cấp dịch vụ",
+              "Bảng kê dòng tiền thu, chi",
+              "Bảng kê các khoản thu khác",
+              "Hóa đơn đầu ra"
+            ]
+          },
+          {
+            "name": "Nhóm 4 – Hồ sơ công nợ và hàng tồn kho",
+            "items": [
+              "Bảng tổng hợp công nợ phải thu",
+              "Bảng tổng hợp công nợ phải trả",
+              "Chi tiết công nợ khách hàng",
+              "Chi tiết công nợ nhà cung cấp",
+              "Bảng kê hàng tồn kho",
+              "Biên bản kiểm kê hàng tồn kho",
+              "Bảng kê nguyên vật liệu",
+              "Bảng kê thành phẩm"
+            ]
+          },
+          {
+            "name": "Nhóm 5 – Hồ sơ quan hệ tín dụng",
+            "items": [
+              "Bảng kê dư nợ vay tại các tổ chức tín dụng",
+              "Hợp đồng tín dụng tại các ngân hàng",
+              "Khế ước nhận nợ",
+              "Lịch trả nợ các khoản vay",
+              "Sao kê khoản vay",
+              "Hợp đồng bảo lãnh tín dụng (nếu có)",
+              "Hồ sơ tài sản bảo đảm tại các tổ chức tín dụng"
+            ]
+          },
+          {
+            "name": "Nhóm 6 – Hồ sơ vốn chủ sở hữu và góp vốn",
+            "items": [
+              "Giấy chứng nhận góp vốn",
+              "Sổ đăng ký thành viên/cổ đông",
+              "Báo cáo tình hình góp vốn",
+              "Chứng từ góp vốn",
+              "Sao kê tài khoản nhận vốn góp",
+              "Nghị quyết/quyết định tăng vốn điều lệ"
+            ]
+          }
+        ],
+        "collateralGroups": [
+          {
+            "name": "Nhóm 1 – Bất động sản",
+            "items": [
+              "Giấy chứng nhận quyền sử dụng đất",
+              "Giấy chứng nhận quyền sở hữu nhà ở",
+              "Giấy chứng nhận quyền sử dụng đất và tài sản gắn liền với đất",
+              "Hồ sơ hoàn công công trình",
+              "Giấy phép xây dựng",
+              "Hồ sơ mua bán/chuyển nhượng bất động sản",
+              "Hồ sơ thừa kế, tặng cho",
+              "Hồ sơ pháp lý đồng sở hữu",
+              "Hồ sơ quy hoạch (nếu cần)"
+            ]
+          },
+          {
+            "name": "Nhóm 2 – Xe ô tô, phương tiện vận tải",
+            "items": [
+              "Giấy chứng nhận đăng ký xe ô tô",
+              "Giấy chứng nhận kiểm định an toàn kỹ thuật và bảo vệ môi trường",
+              "Hợp đồng mua bán xe",
+              "Hóa đơn mua xe",
+              "Giấy chứng nhận nguồn gốc xe",
+              "Hồ sơ đăng ký phương tiện vận tải",
+              "Giấy chứng nhận sở hữu phương tiện vận tải",
+              "Hồ sơ bảo hiểm phương tiện (nếu có)"
+            ]
+          },
+          {
+            "name": "Nhóm 3 – Máy móc, thiết bị, dây chuyền sản xuất",
+            "items": [
+              "Hóa đơn mua máy móc thiết bị",
+              "Hợp đồng mua bán máy móc thiết bị",
+              "Giấy chứng nhận quyền sở hữu máy móc thiết bị",
+              "Hồ sơ nhập khẩu máy móc thiết bị",
+              "Tờ khai hải quan",
+              "Biên bản bàn giao, nghiệm thu",
+              "Hồ sơ dây chuyền sản xuất",
+              "Giấy chứng nhận chất lượng, xuất xứ",
+              "Hình ảnh máy móc, thiết bị"
+            ]
+          },
+          {
+            "name": "Nhóm 4 – Tiền gửi và giấy tờ có giá",
+            "items": [
+              "Sổ tiết kiệm",
+              "Thẻ tiết kiệm",
+              "Chứng nhận tiền gửi",
+              "Trái phiếu",
+              "Giấy tờ có giá",
+              "Chứng từ xác nhận quyền sở hữu giấy tờ có giá"
+            ]
+          },
+          {
+            "name": "Nhóm 5 – Hàng hóa, nguyên vật liệu, hàng tồn kho",
+            "items": [
+              "Bảng kê hàng tồn kho",
+              "Hóa đơn mua hàng hóa",
+              "Chứng từ chứng minh nguồn gốc hàng hóa",
+              "Hợp đồng mua bán hàng hóa",
+              "Biên bản kiểm kê hàng hóa",
+              "Hình ảnh hàng hóa, kho hàng"
+            ]
+          },
+          {
+            "name": "Nhóm 6 – Tài sản bảo đảm của bên thứ ba",
+            "items": [
+              "Hồ sơ pháp lý bên thứ ba bảo đảm",
+              "CCCD người sở hữu tài sản",
+              "Giấy tờ chứng minh quan hệ với bên vay (nếu có)",
+              "Giấy tờ chứng minh quyền sở hữu tài sản",
+              "Hồ sơ pháp lý tài sản bảo đảm",
+              "Văn bản đồng ý dùng tài sản bảo đảm của bên thứ ba (nếu có)"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
