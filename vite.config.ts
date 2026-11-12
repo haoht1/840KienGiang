@@ -9,6 +9,7 @@ export default defineConfig(() => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
+        'html2canvas': path.resolve(__dirname, 'node_modules/html2canvas-pro'),
       },
     },
     server: {

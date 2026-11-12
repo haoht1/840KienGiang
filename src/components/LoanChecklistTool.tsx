@@ -22,7 +22,8 @@ import {
   AlertCircle,
   Loader2
 } from 'lucide-react';
-import html2pdf from 'html2pdf.js';
+import html2canvas from 'html2canvas-pro';
+import { jsPDF } from 'jspdf';
 import contentData from '../data/contentData.json';
 import { ChecklistGroup, ChecklistDocItem, SavedChecklist } from '../types';
 
@@ -92,6 +93,23 @@ export const LoanChecklistTool: React.FC = () => {
     income: { name: '', copy: false, original: false, image: false, note: '', saveToMaster: false },
     collateral: { name: '', copy: false, original: false, image: false, note: '', saveToMaster: false },
   });
+
+  // Check if loan purpose is for business operations (Sản xuất kinh doanh)
+  const isBusinessLoan = useMemo(() => {
+    return customerType === 'personal'
+      ? selectedPurposes.includes('V01')
+      : selectedPurposes.includes('DN01') || selectedPurposes.includes('DN05');
+  }, [customerType, selectedPurposes]);
+
+  const hasOtherIncomeRequiredPurposes = useMemo(() => {
+    return customerType === 'personal'
+      ? selectedPurposes.some((p) => ['V02', 'V03', 'V04', 'V05', 'V06', 'V07'].includes(p))
+      : selectedPurposes.some((p) => ['DN02', 'DN03', 'DN04', 'DN06', 'DN07'].includes(p));
+  }, [customerType, selectedPurposes]);
+
+  // Exclude income documentation if borrowing for business operations and no other consumer loan purposes are selected
+  // (per bank rules: Business docs are already integrated under Group II Loan Purposes)
+  const shouldExcludeIncomeGroup = isBusinessLoan && !hasOtherIncomeRequiredPurposes;
 
   // Re-generate default groups when customer type or purposes change
   useEffect(() => {
@@ -177,44 +195,47 @@ export const LoanChecklistTool: React.FC = () => {
     });
 
     // Group 3: HỒ SƠ CHỨNG MINH NGUỒN THU NHẬP / TÌNH HÌNH TÀI CHÍNH
-    const financialItems: ChecklistDocItem[] = [];
-    if (customerType === 'personal') {
-      checklistData.masterCatalog.personal.incomeGroups.forEach((grp, gIdx) => {
-        grp.items.forEach((doc, idx) => {
-          financialItems.push({
-            id: `inc-${gIdx}-${idx}`,
-            name: `${doc} (${grp.name.split('–')[1]?.trim() || grp.name})`,
-            selected: false,
-            copy: false,
-            original: false,
-            image: false,
-            note: '',
+    // Only included if NOT exclusively business loan
+    if (!shouldExcludeIncomeGroup) {
+      const financialItems: ChecklistDocItem[] = [];
+      if (customerType === 'personal') {
+        checklistData.masterCatalog.personal.incomeGroups.forEach((grp, gIdx) => {
+          grp.items.forEach((doc, idx) => {
+            financialItems.push({
+              id: `inc-${gIdx}-${idx}`,
+              name: `${doc} (${grp.name.split('–')[1]?.trim() || grp.name})`,
+              selected: false,
+              copy: false,
+              original: false,
+              image: false,
+              note: '',
+            });
           });
         });
-      });
-    } else {
-      checklistData.masterCatalog.corporate.financialGroups.forEach((grp, gIdx) => {
-        grp.items.forEach((doc, idx) => {
-          financialItems.push({
-            id: `fin-${gIdx}-${idx}`,
-            name: `${doc} (${grp.name.split('–')[1]?.trim() || grp.name})`,
-            selected: false,
-            copy: false,
-            original: false,
-            image: false,
-            note: '',
+      } else {
+        checklistData.masterCatalog.corporate.financialGroups.forEach((grp, gIdx) => {
+          grp.items.forEach((doc, idx) => {
+            financialItems.push({
+              id: `fin-${gIdx}-${idx}`,
+              name: `${doc} (${grp.name.split('–')[1]?.trim() || grp.name})`,
+              selected: false,
+              copy: false,
+              original: false,
+              image: false,
+              note: '',
+            });
           });
         });
+      }
+
+      newGroups.push({
+        groupId: 'income',
+        groupTitle: customerType === 'personal' ? 'III. HỒ SƠ CHỨNG MINH NGUỒN THU NHẬP' : 'III. HỒ SƠ CHỨNG MINH TÌNH HÌNH TÀI CHÍNH',
+        items: financialItems,
       });
     }
 
-    newGroups.push({
-      groupId: 'income',
-      groupTitle: customerType === 'personal' ? 'III. HỒ SƠ CHỨNG MINH NGUỒN THU NHẬP' : 'III. HỒ SƠ CHỨNG MINH TÌNH HÌNH TÀI CHÍNH',
-      items: financialItems,
-    });
-
-    // Group 4: HỒ SƠ TÀI SẢN BẢO ĐẢM
+    // Group 4 (or 3 if income excluded): HỒ SƠ TÀI SẢN BẢO ĐẢM
     const collateralItems: ChecklistDocItem[] = [];
     const colSource = customerType === 'personal'
       ? checklistData.masterCatalog.personal.collateralGroups
@@ -236,12 +257,12 @@ export const LoanChecklistTool: React.FC = () => {
 
     newGroups.push({
       groupId: 'collateral',
-      groupTitle: 'IV. HỒ SƠ TÀI SẢN BẢO ĐẢM',
+      groupTitle: shouldExcludeIncomeGroup ? 'III. HỒ SƠ TÀI SẢN BẢO ĐẢM' : 'IV. HỒ SƠ TÀI SẢN BẢO ĐẢM',
       items: collateralItems,
     });
 
     setGroups(newGroups);
-  }, [customerType, corporateType, selectedPurposes]);
+  }, [customerType, corporateType, selectedPurposes, shouldExcludeIncomeGroup]);
 
   // Toggle Item checkbox
   const toggleItemSelect = (groupId: string, itemId: string) => {
@@ -446,35 +467,60 @@ export const LoanChecklistTool: React.FC = () => {
     return `Checklist_HoSo_${cleanName || 'KhachHang'}_${datePart}.pdf`;
   }, [customerName, createdDate]);
 
-  // Direct download of A4 portrait PDF file
+  // Direct download of A4 portrait PDF file using html2canvas-pro (full oklch support) and jsPDF
   const handleExportPDF = async () => {
     try {
       setIsExportingPDF(true);
       setPreviewMode(true);
       
-      // Allow DOM to render in preview mode
-      await new Promise((resolve) => setTimeout(resolve, 350));
+      // Allow DOM to fully render in preview mode
+      await new Promise((resolve) => setTimeout(resolve, 400));
       
       const element = printableA4Ref.current;
       if (!element) {
-        alert('Không tìm thấy nội dung để xuất PDF.');
-        setIsExportingPDF(false);
-        return;
+        throw new Error('Không tìm thấy vùng dữ liệu để xuất PDF.');
       }
 
-      const opt = {
-        margin: [8, 10, 10, 10] as [number, number, number, number],
-        filename: pdfFileName,
-        image: { type: 'jpeg' as const, quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, logging: false },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' as const },
-        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
-      };
+      // Capture element with html2canvas-pro (natively supports Tailwind v4 modern oklch colors)
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: '#ffffff',
+      });
 
-      await html2pdf().set(opt).from(element).save();
-    } catch (err) {
+      const imgData = canvas.toDataURL('image/jpeg', 0.98);
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+        compress: true,
+      });
+
+      const pageWidth = pdf.internal.pageSize.getWidth(); // 210mm
+      const pageHeight = pdf.internal.pageSize.getHeight(); // 297mm
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * pageWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      // Add first page
+      pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+      heightLeft -= pageHeight;
+
+      // Add additional pages if checklist extends beyond 1 A4 page
+      while (heightLeft > 0) {
+        position -= pageHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight, undefined, 'FAST');
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(pdfFileName);
+    } catch (err: any) {
       console.error('Lỗi khi xuất PDF:', err);
-      alert('Có lỗi khi tạo file PDF. Quý khách có thể sử dụng chức năng In để lưu file.');
+      alert('Không thể tạo file PDF trực tiếp: ' + (err?.message || 'Lỗi hệ thống') + '. Quý khách có thể bấm nút "In bảng kết quả" và chọn "Lưu dưới dạng PDF" (Save as PDF).');
     } finally {
       setIsExportingPDF(false);
     }
@@ -505,17 +551,17 @@ export const LoanChecklistTool: React.FC = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0 flex-wrap">
+          <div className="flex items-center gap-2.5 shrink-0 flex-wrap w-full md:w-auto">
             <button
               onClick={handleSaveCurrentChecklist}
-              className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               <Save className="w-4 h-4" />
               <span>Lưu checklist</span>
             </button>
             <button
               onClick={handlePrintTable}
-              className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              className="flex-1 sm:flex-initial min-h-[44px] px-4 py-2.5 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white rounded-xl text-xs font-bold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               <Printer className="w-4 h-4" />
               <span>In bảng kết quả</span>
@@ -523,39 +569,39 @@ export const LoanChecklistTool: React.FC = () => {
             <button
               onClick={handleExportPDF}
               disabled={isExportingPDF}
-              className="px-4 py-2 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer"
+              className="w-full sm:w-auto min-h-[44px] px-5 py-2.5 bg-[#ED1C24] hover:bg-red-700 active:scale-95 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold transition-all shadow-sm flex items-center justify-center gap-2 cursor-pointer"
             >
               {isExportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
-              <span>{isExportingPDF ? 'Đang tạo PDF...' : 'Xuất File PDF'}</span>
+              <span>{isExportingPDF ? 'Đang tạo PDF...' : 'Xuất File PDF (A4)'}</span>
             </button>
           </div>
         </div>
 
-        {/* 3 Sub-tabs */}
-        <div className="flex items-center gap-2 border-b border-slate-200 pb-2">
+        {/* 4 Sub-tabs with smooth horizontal scrolling and min 44px touch targets */}
+        <div className="flex items-center gap-2 border-b border-slate-200 pb-2 overflow-x-auto no-scrollbar flex-nowrap">
           <button
             onClick={() => {
               setActiveSubTab('create');
               setPreviewMode(false);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeSubTab === 'create' && !previewMode
                 ? 'bg-[#003B70] text-white shadow-xs'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
-            <Edit3 className="w-3.5 h-3.5" />
-            <span>Lập Checklist Mới ({totalSelectedDocs} giấy tờ đã chọn)</span>
+            <Edit3 className="w-4 h-4" />
+            <span>Lập Checklist Mới ({totalSelectedDocs})</span>
           </button>
           <button
             onClick={() => setPreviewMode(!previewMode)}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               previewMode
                 ? 'bg-[#ED1C24] text-white shadow-xs'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
-            <Eye className="w-3.5 h-3.5" />
+            <Eye className="w-4 h-4" />
             <span>Xem trước PDF A4 ({previewMode ? 'Đang bật' : 'Xem ngay'})</span>
           </button>
           <button
@@ -563,13 +609,13 @@ export const LoanChecklistTool: React.FC = () => {
               setActiveSubTab('saved');
               setPreviewMode(false);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeSubTab === 'saved'
                 ? 'bg-[#003B70] text-white shadow-xs'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
-            <FileText className="w-3.5 h-3.5" />
+            <FileText className="w-4 h-4" />
             <span>Checklist Đã Lập ({savedList.length})</span>
           </button>
           <button
@@ -577,13 +623,13 @@ export const LoanChecklistTool: React.FC = () => {
               setActiveSubTab('catalog');
               setPreviewMode(false);
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-2 shrink-0 ${
               activeSubTab === 'catalog'
                 ? 'bg-[#003B70] text-white shadow-xs'
                 : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
             }`}
           >
-            <FolderPlus className="w-3.5 h-3.5" />
+            <FolderPlus className="w-4 h-4" />
             <span>Quản Lý Danh Mục Mẫu</span>
           </button>
         </div>
@@ -885,9 +931,16 @@ export const LoanChecklistTool: React.FC = () => {
 
             {/* Row 3: Mục đích vay vốn (Cho phép chọn nhiều mục đích) */}
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
-                Mục đích vay vốn (Cho phép chọn nhiều mục đích)
-              </label>
+              <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+                <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  Mục đích vay vốn (Cho phép chọn nhiều mục đích)
+                </label>
+                {shouldExcludeIncomeGroup && (
+                  <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full">
+                    ✓ Miễn hồ sơ chứng minh thu nhập riêng (Vay SXKD)
+                  </span>
+                )}
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
                 {(customerType === 'personal'
                   ? checklistData.personalPurposes
@@ -906,9 +959,9 @@ export const LoanChecklistTool: React.FC = () => {
                             : [...prev, purp.id]
                         );
                       }}
-                      className={`p-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-all flex items-start gap-2 ${
+                      className={`min-h-[48px] p-3 rounded-xl border text-xs font-medium cursor-pointer transition-all flex items-center gap-2.5 select-none active:scale-[0.98] ${
                         isChecked
-                          ? 'border-[#003B70] bg-blue-50/60 text-[#003B70] font-semibold'
+                          ? 'border-[#003B70] bg-blue-50/70 text-[#003B70] font-bold ring-2 ring-[#003B70]/10 shadow-xs'
                           : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
                       }`}
                     >
@@ -916,13 +969,22 @@ export const LoanChecklistTool: React.FC = () => {
                         type="checkbox"
                         checked={isChecked}
                         onChange={() => {}}
-                        className="mt-0.5 accent-[#003B70]"
+                        className="w-4 h-4 accent-[#003B70] shrink-0 pointer-events-none"
                       />
-                      <span className="leading-tight">{purp.name}</span>
+                      <span className="leading-snug">{purp.name}</span>
                     </div>
                   );
                 })}
               </div>
+
+              {shouldExcludeIncomeGroup && (
+                <div className="mt-3 p-3.5 bg-blue-50/80 border border-blue-200 rounded-xl text-xs text-blue-900 flex items-start gap-2.5">
+                  <AlertCircle className="w-4 h-4 text-[#003B70] shrink-0 mt-0.5" />
+                  <div className="leading-relaxed">
+                    <strong>Quy định nghiệp vụ:</strong> Đối với phương án <strong>Vay phục vụ sản xuất kinh doanh</strong>, toàn bộ hồ sơ kinh doanh & doanh thu đã được tổng hợp chi tiết trong <strong>Nhóm II (Hồ sơ vay vốn)</strong>. Do đó hệ thống tự động loại bỏ mục hồ sơ chứng minh thu nhập riêng khỏi danh mục.
+                  </div>
+                </div>
+              )}
 
               {(selectedPurposes.includes('V08') || selectedPurposes.includes('DN08')) && (
                 <div className="mt-2.5 max-w-md">
@@ -999,106 +1061,126 @@ export const LoanChecklistTool: React.FC = () => {
                   </span>
                 </div>
 
+                {/* Mobile scroll hint */}
+                <div className="sm:hidden px-4 py-2 bg-slate-50 border-b border-slate-200 text-[11px] text-slate-500 flex items-center justify-between">
+                  <span>👉 Cuộn ngang để xem đầy đủ các cột</span>
+                  <span className="font-semibold text-[#003B70]">Chạm ô để chọn</span>
+                </div>
+
                 {/* Table Header */}
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto custom-scrollbar">
                   <table className="w-full text-left text-xs border-collapse">
                     <thead className="bg-slate-100 text-slate-700 uppercase font-bold text-[11px] border-b border-slate-200">
                       <tr>
-                        <th className="py-2.5 px-3 text-center w-12">Chọn</th>
-                        <th className="py-2.5 px-3">Tên giấy tờ / Hồ sơ</th>
-                        <th className="py-2.5 px-2 text-center w-24">Bản copy</th>
-                        <th className="py-2.5 px-2 text-center w-24">Bản chính</th>
-                        <th className="py-2.5 px-2 text-center w-24">Hình ảnh</th>
-                        <th className="py-2.5 px-3 w-64">Ghi chú riêng</th>
-                        <th className="py-2.5 px-2 text-center w-12">Thao tác</th>
+                        <th className="py-3 px-2 text-center w-12 shrink-0">Chọn</th>
+                        <th className="py-3 px-4 min-w-[340px] sm:min-w-[460px]">Tên giấy tờ / Hồ sơ</th>
+                        <th className="py-3 px-1 text-center w-14 sm:w-16 shrink-0" title="Bản copy / Photo">Bản copy</th>
+                        <th className="py-3 px-1 text-center w-14 sm:w-16 shrink-0" title="Bản gốc / Bản chính">Bản chính</th>
+                        <th className="py-3 px-1 text-center w-14 sm:w-16 shrink-0" title="Hình ảnh / Bản chụp">Hình ảnh</th>
+                        <th className="py-3 px-2 text-center w-32 sm:w-36 shrink-0">Ghi chú</th>
+                        <th className="py-3 px-1 text-center w-12 shrink-0">Thao tác</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
-                      {grp.items.map((doc, docIdx) => (
+                      {grp.items.map((doc) => (
                         <tr
                           key={doc.id}
                           className={`transition-colors ${
-                            doc.selected ? 'bg-blue-50/40' : 'hover:bg-slate-50'
+                            doc.selected ? 'bg-blue-50/50' : 'hover:bg-slate-50'
                           }`}
                         >
-                          {/* Master checkbox for this row */}
-                          <td className="py-2.5 px-3 text-center">
-                            <input
-                              type="checkbox"
-                              checked={doc.selected}
-                              onChange={() => toggleItemSelect(grp.groupId, doc.id)}
-                              className="w-4 h-4 rounded text-[#003B70] accent-[#003B70] cursor-pointer"
-                            />
+                          {/* Master checkbox for this row - touch friendly min 44px */}
+                          <td className="py-2 px-2 text-center align-middle w-12 shrink-0">
+                            <label className="min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer mx-auto">
+                              <input
+                                type="checkbox"
+                                checked={doc.selected}
+                                onChange={() => toggleItemSelect(grp.groupId, doc.id)}
+                                className="w-5 h-5 rounded text-[#003B70] accent-[#003B70] cursor-pointer"
+                              />
+                            </label>
                           </td>
 
-                          {/* Document Name */}
-                          <td className="py-2.5 px-3">
-                            <span
+                          {/* Document Name - Expanded 3x with generous line height */}
+                          <td className="py-3 px-4 min-w-[340px] sm:min-w-[460px] align-middle">
+                            <div
                               onClick={() => toggleItemSelect(grp.groupId, doc.id)}
-                              className={`cursor-pointer ${
-                                doc.selected ? 'font-bold text-slate-900' : 'text-slate-700'
-                              }`}
+                              className="cursor-pointer select-none"
                             >
-                              {doc.name}
-                            </span>
-                            {doc.isCustom && (
-                              <span className="ml-2 text-[10px] text-amber-700 bg-amber-100 px-1.5 py-0.5 rounded">
-                                Thủ công
+                              <span
+                                className={`text-xs sm:text-sm leading-relaxed block ${
+                                  doc.selected ? 'font-bold text-slate-900' : 'text-slate-700 font-medium'
+                                }`}
+                              >
+                                {doc.name}
                               </span>
-                            )}
+                              {doc.isCustom && (
+                                <span className="inline-block mt-1 text-[10px] text-amber-700 bg-amber-100 font-semibold px-2 py-0.5 rounded">
+                                  Thủ công
+                                </span>
+                              )}
+                            </div>
                           </td>
 
-                          {/* 3 Independent checkboxes: Copy */}
-                          <td className="py-2.5 px-2 text-center">
-                            <input
-                              type="checkbox"
-                              checked={doc.copy}
-                              onChange={() => toggleDocType(grp.groupId, doc.id, 'copy')}
-                              className="w-4 h-4 rounded text-blue-600 accent-blue-600 cursor-pointer"
-                            />
+                          {/* 3 Independent checkboxes: Copy - touch friendly min 44px */}
+                          <td className="py-2 px-1 text-center align-middle w-14 sm:w-16 shrink-0">
+                            <label className="min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer mx-auto rounded-lg hover:bg-blue-100/60 active:scale-95 transition-all">
+                              <input
+                                type="checkbox"
+                                checked={doc.copy}
+                                onChange={() => toggleDocType(grp.groupId, doc.id, 'copy')}
+                                className="w-5 h-5 rounded text-blue-600 accent-blue-600 cursor-pointer"
+                              />
+                            </label>
                           </td>
 
-                          {/* Original */}
-                          <td className="py-2.5 px-2 text-center">
-                            <input
-                              type="checkbox"
-                              checked={doc.original}
-                              onChange={() => toggleDocType(grp.groupId, doc.id, 'original')}
-                              className="w-4 h-4 rounded text-emerald-600 accent-emerald-600 cursor-pointer"
-                            />
+                          {/* Original - touch friendly min 44px */}
+                          <td className="py-2 px-1 text-center align-middle w-14 sm:w-16 shrink-0">
+                            <label className="min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer mx-auto rounded-lg hover:bg-emerald-100/60 active:scale-95 transition-all">
+                              <input
+                                type="checkbox"
+                                checked={doc.original}
+                                onChange={() => toggleDocType(grp.groupId, doc.id, 'original')}
+                                className="w-5 h-5 rounded text-emerald-600 accent-emerald-600 cursor-pointer"
+                              />
+                            </label>
                           </td>
 
-                          {/* Image */}
-                          <td className="py-2.5 px-2 text-center">
-                            <input
-                              type="checkbox"
-                              checked={doc.image}
-                              onChange={() => toggleDocType(grp.groupId, doc.id, 'image')}
-                              className="w-4 h-4 rounded text-purple-600 accent-purple-600 cursor-pointer"
-                            />
+                          {/* Image - touch friendly min 44px */}
+                          <td className="py-2 px-1 text-center align-middle w-14 sm:w-16 shrink-0">
+                            <label className="min-h-[44px] min-w-[44px] flex items-center justify-center cursor-pointer mx-auto rounded-lg hover:bg-purple-100/60 active:scale-95 transition-all">
+                              <input
+                                type="checkbox"
+                                checked={doc.image}
+                                onChange={() => toggleDocType(grp.groupId, doc.id, 'image')}
+                                className="w-5 h-5 rounded text-purple-600 accent-purple-600 cursor-pointer"
+                              />
+                            </label>
                           </td>
 
-                          {/* Individual Note */}
-                          <td className="py-2.5 px-3">
+                          {/* Individual Note - narrowed by half */}
+                          <td className="py-2 px-2 align-middle w-32 sm:w-36 shrink-0">
                             <input
                               type="text"
                               value={doc.note}
                               onChange={(e) => changeItemNote(grp.groupId, doc.id, e.target.value)}
-                              placeholder="Ví dụ: 03 tháng gần nhất, bản chụp rõ nét..."
-                              className="w-full px-2.5 py-1 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-[#003B70]"
+                              placeholder="Ghi chú..."
+                              className="w-full px-2.5 py-1.5 text-xs rounded-lg border border-slate-200 focus:outline-none focus:border-[#003B70] bg-white text-slate-800"
                             />
                           </td>
 
                           {/* Action */}
-                          <td className="py-2.5 px-2 text-center">
-                            {doc.isCustom && (
+                          <td className="py-2 px-1 text-center align-middle w-12 shrink-0">
+                            {doc.isCustom ? (
                               <button
                                 onClick={() => handleRemoveManualDoc(grp.groupId, doc.id)}
-                                className="text-red-500 hover:text-red-700 p-1"
+                                className="min-h-[40px] min-w-[40px] text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg inline-flex items-center justify-center cursor-pointer active:scale-90"
                                 title="Xóa hồ sơ thủ công"
                               >
-                                <Trash2 className="w-3.5 h-3.5" />
+                                <Trash2 className="w-4 h-4" />
                               </button>
+                            ) : (
+                              <span className="text-slate-300 text-xs">-</span>
                             )}
                           </td>
                         </tr>
@@ -1126,7 +1208,7 @@ export const LoanChecklistTool: React.FC = () => {
                             [grp.groupId]: { ...prev[grp.groupId], name: e.target.value },
                           }))
                         }
-                        className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs"
+                        className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs min-h-[40px]"
                       />
                     </div>
 
@@ -1141,12 +1223,12 @@ export const LoanChecklistTool: React.FC = () => {
                             [grp.groupId]: { ...prev[grp.groupId], note: e.target.value },
                           }))
                         }
-                        className="w-full px-3 py-1.5 rounded-lg border border-slate-300 text-xs"
+                        className="w-full px-3 py-2 rounded-lg border border-slate-300 text-xs min-h-[40px]"
                       />
                     </div>
 
                     <div className="sm:col-span-3 flex items-center justify-between gap-2">
-                      <label className="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer">
+                      <label className="flex items-center gap-1 text-[11px] text-slate-600 cursor-pointer min-h-[40px]">
                         <input
                           type="checkbox"
                           checked={manualInputs[grp.groupId]?.saveToMaster || false}
@@ -1156,7 +1238,7 @@ export const LoanChecklistTool: React.FC = () => {
                               [grp.groupId]: { ...prev[grp.groupId], saveToMaster: e.target.checked },
                             }))
                           }
-                          className="accent-[#003B70]"
+                          className="accent-[#003B70] w-4 h-4"
                         />
                         <span>Lưu vào mẫu</span>
                       </label>
@@ -1164,9 +1246,10 @@ export const LoanChecklistTool: React.FC = () => {
                       <button
                         type="button"
                         onClick={() => handleAddManualDoc(grp.groupId)}
-                        className="px-3 py-1.5 bg-[#003B70] hover:bg-blue-800 text-white rounded-lg text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer"
+                        className="min-h-[40px] px-4 py-2 bg-[#003B70] hover:bg-blue-800 active:scale-95 text-white rounded-lg text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer flex items-center gap-1.5"
                       >
-                        Thêm hồ sơ
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Thêm hồ sơ</span>
                       </button>
                     </div>
                   </div>
@@ -1175,29 +1258,29 @@ export const LoanChecklistTool: React.FC = () => {
             ))}
           </div>
 
-          {/* Bottom Floating Bar */}
-          <div className="sticky bottom-4 z-40 bg-white/95 backdrop-blur-md p-4 rounded-2xl border border-slate-300 shadow-xl flex items-center justify-between flex-wrap gap-4">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-bold text-slate-800">
+          {/* Bottom Floating Bar with Mobile-first touch friendly buttons */}
+          <div className="sticky bottom-3 z-40 bg-white/95 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-slate-300 shadow-xl flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+            <div className="flex items-center justify-between sm:justify-start gap-3">
+              <span className="text-xs sm:text-sm font-bold text-slate-800">
                 Tổng cộng: <strong className="text-[#ED1C24]">{totalSelectedDocs}</strong> giấy tờ được chọn
               </span>
-              <span className="text-xs text-slate-400">·</span>
-              <span className="text-xs text-slate-600">
-                Khách hàng: <strong>{customerName || 'Chưa nhập'}</strong>
+              <span className="text-xs text-slate-400 hidden sm:inline">·</span>
+              <span className="text-xs text-slate-600 truncate max-w-[180px] sm:max-w-none">
+                Khách: <strong>{customerName || 'Chưa nhập'}</strong>
               </span>
             </div>
 
-            <div className="flex items-center gap-2.5 flex-wrap">
+            <div className="grid grid-cols-2 sm:flex sm:items-center gap-2">
               <button
                 onClick={handleSaveCurrentChecklist}
-                className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="min-h-[44px] px-3.5 py-2.5 bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
               >
                 <Save className="w-4 h-4" />
-                <span>Lưu checklist này</span>
+                <span>Lưu checklist</span>
               </button>
               <button
                 onClick={handlePrintTable}
-                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="min-h-[44px] px-3.5 py-2.5 bg-slate-800 hover:bg-slate-900 active:scale-95 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm transition-all cursor-pointer"
               >
                 <Printer className="w-4 h-4" />
                 <span>In bảng kết quả</span>
@@ -1205,7 +1288,7 @@ export const LoanChecklistTool: React.FC = () => {
               <button
                 onClick={handleExportPDF}
                 disabled={isExportingPDF}
-                className="px-4 py-2 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold flex items-center gap-1.5 shadow-sm transition-all cursor-pointer"
+                className="col-span-2 sm:col-span-1 min-h-[44px] px-5 py-2.5 bg-[#ED1C24] hover:bg-red-700 active:scale-95 disabled:opacity-50 text-white rounded-xl text-xs font-extrabold flex items-center justify-center gap-2 shadow-sm transition-all cursor-pointer"
               >
                 {isExportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                 <span>{isExportingPDF ? 'Đang tạo PDF...' : 'Xuất File PDF (A4)'}</span>
@@ -1231,23 +1314,23 @@ export const LoanChecklistTool: React.FC = () => {
             <div className="flex items-center gap-2 flex-wrap">
               <button
                 onClick={() => setPreviewMode(false)}
-                className="px-3 py-1.5 bg-white/20 hover:bg-white/30 text-white rounded-lg text-xs font-semibold cursor-pointer"
+                className="min-h-[42px] px-3.5 py-2 bg-white/20 hover:bg-white/30 active:scale-95 text-white rounded-xl text-xs font-semibold cursor-pointer"
               >
                 Quay lại chỉnh sửa
               </button>
               <button
                 onClick={handlePrintTable}
-                className="px-3.5 py-1.5 bg-slate-700 hover:bg-slate-600 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                className="min-h-[42px] px-4 py-2 bg-slate-700 hover:bg-slate-600 active:scale-95 text-white rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
               >
-                <Printer className="w-3.5 h-3.5" />
+                <Printer className="w-4 h-4" />
                 <span>In bảng kết quả</span>
               </button>
               <button
                 onClick={handleExportPDF}
                 disabled={isExportingPDF}
-                className="px-4 py-1.5 bg-[#ED1C24] hover:bg-red-700 disabled:opacity-50 text-white rounded-lg text-xs font-bold flex items-center gap-1.5 shadow-xs cursor-pointer"
+                className="min-h-[42px] px-5 py-2 bg-[#ED1C24] hover:bg-red-700 active:scale-95 disabled:opacity-50 text-white rounded-xl text-xs font-bold flex items-center gap-2 shadow-xs cursor-pointer"
               >
-                {isExportingPDF ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Download className="w-3.5 h-3.5" />}
+                {isExportingPDF ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
                 <span>{isExportingPDF ? 'Đang tải...' : 'Tải File PDF (A4)'}</span>
               </button>
             </div>
@@ -1259,24 +1342,16 @@ export const LoanChecklistTool: React.FC = () => {
             <div className="border-b-2 border-slate-800 pb-4 mb-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-bold tracking-wider text-slate-800 uppercase">
-                    VIETINBANK
-                  </div>
-                  <div className="text-xs font-semibold text-slate-600 uppercase">
+                  <div className="text-xs sm:text-sm font-bold tracking-tight text-slate-800 uppercase">
                     NGÂN HÀNG TMCP CÔNG THƯƠNG VIỆT NAM
                   </div>
-                  <div className="text-xs font-bold text-[#003B70] uppercase">
+                  <div className="text-xs sm:text-sm font-extrabold text-[#003B70] uppercase">
                     CHI NHÁNH KIÊN GIANG
                   </div>
                 </div>
-
-                <div className="text-right text-[11px] text-slate-500 font-mono">
-                  <div>Biểu mẫu: BM-CKL-01/VTB</div>
-                  <div>Ngày xuất: {createdDate}</div>
-                </div>
               </div>
 
-              <div className="text-center mt-6">
+              <div className="text-center mt-5">
                 <h1 className="text-xl sm:text-2xl font-black tracking-tight text-[#003B70] uppercase leading-snug">
                   DANH MỤC HỒ SƠ KHÁCH HÀNG CẦN CUNG CẤP
                 </h1>
@@ -1352,36 +1427,36 @@ export const LoanChecklistTool: React.FC = () => {
                       {grp.groupTitle}
                     </div>
 
-                    <table className="w-full text-left text-xs border border-slate-300 border-collapse">
+                    <table className="w-full text-left text-xs border border-slate-300 border-collapse table-fixed">
                       <thead className="bg-[#003B70] text-white uppercase text-[10px] font-bold">
                         <tr>
-                          <th className="py-2 px-2 text-center border border-blue-900 w-10">STT</th>
+                          <th className="py-2 px-1 text-center border border-blue-900 w-10">STT</th>
                           <th className="py-2 px-3 border border-blue-900">Danh mục hồ sơ</th>
-                          <th className="py-2 px-2 text-center border border-blue-900 w-20">Bản copy</th>
-                          <th className="py-2 px-2 text-center border border-blue-900 w-20">Bản chính</th>
-                          <th className="py-2 px-2 text-center border border-blue-900 w-20">Hình ảnh</th>
-                          <th className="py-2 px-3 border border-blue-900 w-44">Ghi chú</th>
+                          <th className="py-2 px-1 text-center border border-blue-900 w-14">Bản copy</th>
+                          <th className="py-2 px-1 text-center border border-blue-900 w-14">Bản chính</th>
+                          <th className="py-2 px-1 text-center border border-blue-900 w-14">Hình ảnh</th>
+                          <th className="py-2 px-2 text-center border border-blue-900 w-24">Ghi chú</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-300">
                         {selectedItems.map((doc, idx) => (
                           <tr key={doc.id} className={idx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'}>
-                            <td className="py-1.5 px-2 text-center border border-slate-300 font-semibold">
+                            <td className="py-1.5 px-1 text-center border border-slate-300 font-semibold text-[11px]">
                               {idx + 1}
                             </td>
-                            <td className="py-1.5 px-3 border border-slate-300 font-medium text-slate-900">
+                            <td className="py-1.5 px-3 border border-slate-300 font-medium text-slate-900 leading-snug text-[11px]">
                               {doc.name}
                             </td>
-                            <td className="py-1.5 px-2 text-center border border-slate-300">
+                            <td className="py-1.5 px-1 text-center border border-slate-300 font-bold text-slate-800 text-[12px]">
                               {doc.copy ? '☑' : '☐'}
                             </td>
-                            <td className="py-1.5 px-2 text-center border border-slate-300">
+                            <td className="py-1.5 px-1 text-center border border-slate-300 font-bold text-slate-800 text-[12px]">
                               {doc.original ? '☑' : '☐'}
                             </td>
-                            <td className="py-1.5 px-2 text-center border border-slate-300">
+                            <td className="py-1.5 px-1 text-center border border-slate-300 font-bold text-slate-800 text-[12px]">
                               {doc.image ? '☑' : '☐'}
                             </td>
-                            <td className="py-1.5 px-3 border border-slate-300 text-slate-600 text-[11px]">
+                            <td className="py-1.5 px-2 text-center border border-slate-300 text-slate-600 text-[10px] truncate">
                               {doc.note || '-'}
                             </td>
                           </tr>
