@@ -6,32 +6,49 @@
   }
 }
 
-/* Print styling for Loan Checklist PDF Export */
+/* Print styling for A4 Documents (Phiếu giao hàng & Bảng kê thu mua) */
 @media print {
-  body {
+  html, body {
     background: white !important;
-    color: black !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
   }
   
-  .no-print {
+  .no-print,
+  nav,
+  aside,
+  header,
+  footer,
+  .sidebar,
+  .print-controls,
+  button:not(.allow-print) {
     display: none !important;
   }
 
-  .print-only {
+  .print-container {
     display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    background: white !important;
+    transform: none !important;
   }
 
-  .print-container {
-    padding: 0 !important;
-    margin: 0 !important;
-    max-width: 100% !important;
+  .a4-sheet {
     box-shadow: none !important;
     border: none !important;
-  }
-
-  @page {
-    size: A4 portrait;
-    margin: 12mm 15mm 15mm 15mm;
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: auto !important;
   }
 }
 

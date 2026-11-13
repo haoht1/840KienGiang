@@ -8,8 +8,8 @@ export default defineConfig(() => {
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, '.'),
-        'html2canvas': path.resolve(__dirname, 'node_modules/html2canvas-pro'),
+        '@': path.resolve(process.cwd(), '.'),
+        'html2canvas': path.resolve(process.cwd(), 'node_modules/html2canvas-pro'),
       },
     },
     server: {
